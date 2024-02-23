@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
-class detailsScreen extends StatelessWidget {
-  const detailsScreen({super.key});
+import 'package:flutter/material.dart';
+import 'package:sutt_round_2/Data Storage and API Calls/get_movie_by_title.dart';
+
+
+
+class DetailsScreen extends StatelessWidget {
+  const DetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

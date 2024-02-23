@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sutt_round_2/UI/home_screen.dart';
 import 'package:sutt_round_2/UI/splash_screen.dart';
 import 'package:sutt_round_2/UI/details_screen.dart';
+import 'package:sutt_round_2/Data Storage and API Calls/get_movie_by_title.dart';
 
 class movie_search_app extends StatelessWidget {
 
@@ -18,8 +19,8 @@ class movie_search_app extends StatelessWidget {
         builder: (context, state) => splashScreen(),
       ),
       GoRoute(
-        path: '/details',
-        builder: (context, state) => detailsScreen(),
+        path: '/details', // Define a dynamic segment for the movie title
+        builder: (context, state) => DetailsScreen(),
       ),
     ],
   );
