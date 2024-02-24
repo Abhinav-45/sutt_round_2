@@ -123,7 +123,12 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
             if (imageUrlsData.posterUrl != null) imageUrlsData.posterUrl!,
             if (imageUrlsData.fanartUrl != null) imageUrlsData.fanartUrl!,
           ];
+
         });
+      } else {
+        imageUrls = [
+          'https://i.ibb.co/hXDHWc4/4.jpg', 'https://i.ibb.co/hXDHWc4/4.jpg'
+        ];
       }
     } catch (error) {
       print('Error fetching image URLs: $error');
