@@ -105,7 +105,7 @@ class ApiService {
     var url = Uri.parse('https://movies-tv-shows-database.p.rapidapi.com/');
     var headers = {
       'Type': 'get-nowplaying-movies',
-      'X-RapidAPI-Key': '46f993160emsh83d6ed7ad64633ap1c2e95jsn9318cf758c3f',
+      'X-RapidAPI-Key': 'f89d0cb173msh69669d3cdfd3bb4p1493a5jsn71a6c4f89618',
       'X-RapidAPI-Host': 'movies-tv-shows-database.p.rapidapi.com'
     };
     var params = {'page': '1'};
@@ -121,7 +121,7 @@ class ApiService {
         String title = movieData['title'];
         String imdbId = movieData['imdb_id'];
         String year = movieData['year'];
-        String? imageUrl = await _fetchImageUrl(imdbId); // Fetch image URL separately
+        String? imageUrl = await _fetchPosterUrl(imdbId); // Fetch image URL separately
         movies.add(Movie(title: title, imageUrl: imageUrl, imdbId: imdbId, year: year));
       }
 
@@ -135,7 +135,7 @@ class ApiService {
     var url = Uri.parse('https://movies-tv-shows-database.p.rapidapi.com/');
     var headers = {
       'Type': 'get-movies-by-title',
-      'X-RapidAPI-Key': '46f993160emsh83d6ed7ad64633ap1c2e95jsn9318cf758c3f',
+      'X-RapidAPI-Key': 'f89d0cb173msh69669d3cdfd3bb4p1493a5jsn71a6c4f89618',
       'X-RapidAPI-Host': 'movies-tv-shows-database.p.rapidapi.com'
     };
     var params = {'title': title.isNotEmpty ? title : 'all'};
@@ -151,7 +151,7 @@ class ApiService {
         String title = movieData['title'];
         String imdbId = movieData['imdb_id'];
         String year = movieData['year'].toString();
-        String? imageUrl = await _fetchImageUrl(imdbId);
+        String? imageUrl = await _fetchPosterUrl(imdbId);
         movies.add(Movie(title: title, imageUrl: imageUrl, imdbId: imdbId, year: year));
       }
 
@@ -160,13 +160,11 @@ class ApiService {
       throw Exception('Failed to fetch data');
     }
   }
-
-
-  static Future<String?> _fetchImageUrl(String imdbId) async {
+  static Future<String?> _fetchPosterUrl(String imdbId) async {
     var url = Uri.parse('https://movies-tv-shows-database.p.rapidapi.com/');
     var headers = {
       'Type': 'get-movies-images-by-imdb',
-      'X-RapidAPI-Key': '46f993160emsh83d6ed7ad64633ap1c2e95jsn9318cf758c3f',
+      'X-RapidAPI-Key': 'f89d0cb173msh69669d3cdfd3bb4p1493a5jsn71a6c4f89618',
       'X-RapidAPI-Host': 'movies-tv-shows-database.p.rapidapi.com'
     };
     var params = {'movieid': imdbId};
@@ -175,20 +173,49 @@ class ApiService {
 
     if (response.statusCode == 200) {
       var responseData = json.decode(response.body);
-      // print (responseData);
-      return responseData['poster'];
+      return responseData['poster'] as String?;
     } else {
-      print('Failed to fetch image for IMDb ID: $imdbId');
+      print('Failed to fetch poster for IMDb ID: $imdbId');
       return null;
     }
   }
+
+
+
+
+
+  static Future<ImageUrls?> _fetchImageUrls(String imdbId) async {
+  var url = Uri.parse('https://movies-tv-shows-database.p.rapidapi.com/');
+  var headers = {
+  'Type': 'get-movies-images-by-imdb',
+  'X-RapidAPI-Key': 'f89d0cb173msh69669d3cdfd3bb4p1493a5jsn71a6c4f89618',
+  'X-RapidAPI-Host': 'movies-tv-shows-database.p.rapidapi.com'
+  };
+  var params = {'movieid': imdbId};
+
+  var response = await http.get(url.replace(queryParameters: params), headers: headers);
+
+  if (response.statusCode == 200) {
+  var responseData = json.decode(response.body);
+  var posterUrl = responseData['poster'] as String?;
+  var fanartUrl = responseData['fanart'] as String?;
+  return ImageUrls(posterUrl: posterUrl, fanartUrl: fanartUrl);
+  } else {
+  print('Failed to fetch images for IMDb ID: $imdbId');
+  return null;
+  }
+  }
+  static Future<ImageUrls?> fetchImageUrls(String imdbId) async {
+    return _fetchImageUrls(imdbId); // Call the _fetchImageUrls method
+  }
+
 
   static Future<Map<String, dynamic>> fetchMovieDetails(String imdbId) async {
     var url = Uri.https('movies-tv-shows-database.p.rapidapi.com', '/', {'movieid': imdbId});
 
     var headers = {
       'Type': 'get-movie-details',
-      'X-RapidAPI-Key': '46f993160emsh83d6ed7ad64633ap1c2e95jsn9318cf758c3f',
+      'X-RapidAPI-Key': 'f89d0cb173msh69669d3cdfd3bb4p1493a5jsn71a6c4f89618',
       'X-RapidAPI-Host': 'movies-tv-shows-database.p.rapidapi.com'
     };
 
@@ -196,7 +223,9 @@ class ApiService {
       var response = await http.get(url, headers: headers);
 
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        print("Response Body Structure:");
+        print(json.decode(response.body)); // Print the structure of response.body
+        return json.decode(response.body);
       } else {
         throw Exception('Failed to load movie details');
       }
@@ -226,6 +255,12 @@ class Movie {
       imdbId: json['imdb_id'] as String,
     );
   }
+}
+class ImageUrls {
+  final String? posterUrl;
+  final String? fanartUrl;
+
+  ImageUrls({this.posterUrl, this.fanartUrl});
 }
 
 

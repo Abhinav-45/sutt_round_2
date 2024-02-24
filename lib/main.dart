@@ -19,8 +19,14 @@ class movie_search_app extends StatelessWidget {
         builder: (context, state) => splashScreen(),
       ),
       GoRoute(
-        path: '/details', // Define a dynamic segment for the movie title
-        builder: (context, state) => DetailsScreen(),
+        path: '/details/:imdbId', // Define a dynamic segment for the movie ID
+        builder: (context, state) {
+          // Extract the movie ID from the route parameters
+          final movieId = state.pathParameters['imdbId'];
+          // Pass the movie ID to the DetailsScreen constructor
+          return MovieDetailsScreen(imdbId: movieId ?? '');
+
+        },
       ),
     ],
   );

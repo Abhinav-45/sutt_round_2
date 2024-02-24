@@ -150,7 +150,9 @@ class _MovieCardState extends State<MovieCard> {
     final screenHeight = MediaQuery.of(context).size.height;
     return GestureDetector(
         onTap: () {
-          context.go('/details');
+          print("IMDb ID: ${widget.movie.imdbId}");
+          print('hi');
+          context.go('/details/${widget.movie.imdbId}');
           // Navigator.push(
           //   context,
           //   MaterialPageRoute(
@@ -189,7 +191,7 @@ class _MovieCardState extends State<MovieCard> {
                     child: IconButton(
                       icon: Icon(
                         _liked ? Icons.favorite : Icons.favorite_border,
-                        color: _liked ? Colors.red : Colors.white,
+                        color: _liked ? Colors.red : Colors.black,
                       ),
                       onPressed: () {
                         setState(() {
