@@ -166,7 +166,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 ),
                 children: <Widget>[
                   Text(
-                    movieDetails?['description'] != null ? movieDetails!['description'] : 'Description Not Available',
+                    movieDetails!['description'] != null ? movieDetails!['description'] : 'Description Not Available',
                     style: customTextStyle.copyWith(fontSize: 16),
 
                   ),
