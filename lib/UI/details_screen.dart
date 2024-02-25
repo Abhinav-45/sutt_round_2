@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sutt_round_2/Data Storage and API Calls/get_movie_by_title.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:sutt_round_2/Logic/star_rating.dart';
+import 'package:go_router/go_router.dart';
 
 
 
@@ -127,7 +128,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
         });
       } else {
         imageUrls = [
-          'https://i.ibb.co/hXDHWc4/4.jpg', 'https://i.ibb.co/hXDHWc4/4.jpg'
+          'https://i.ibb.co/hXDHWc4/4.jpg', 'i.ibb.co/hXDHWc4/4.jpg'
         ];
       }
     } catch (error) {
@@ -140,108 +141,145 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Movie Details'),
+        leading: BackButton(
+          color: Colors.black,
+          onPressed: () {
+            context.go('/home');
+          },
+        ),
+
+        backgroundColor: Colors.cyanAccent,
       ),
       body: movieDetails == null
           ? CircularProgressIndicator() // Show loading indicator while fetching data
-          : Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          :
 
-          // Display carousel slider if imageUrls are available
-          if (imageUrls.isNotEmpty)
-            CarouselSlider(
-              options: CarouselOptions(
-                height: 200.0,
-                enlargeCenterPage: true,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _currentImageIndex = index;
-                  });
-                },
-              ),
-              items: imageUrls.map((imageUrl) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.symmetric(horizontal: 5.0),
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
+          SingleChildScrollView(
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+
+                // Display carousel slider if imageUrls are available
+                if (imageUrls.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CarouselSlider(
+                      options: CarouselOptions(
+                        height: 200.0,
+                        enlargeCenterPage: true,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            _currentImageIndex = index;
+                          });
+                        },
                       ),
-                      child: Image.network(
-                        imageUrl,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  },
-                );
-              }).toList(),
-            ),
-          // Display indicator for carousel
-          if (imageUrls.isNotEmpty)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: imageUrls.map((url) {
-                int index = imageUrls.indexOf(url);
-                return Container(
-                  width: 8.0,
-                  height: 8.0,
-                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _currentImageIndex == index ? Colors.blueAccent : Colors.grey,
+                      items: imageUrls.map((imageUrl) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin: EdgeInsets.symmetric(horizontal: 5.0),
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                              ),
+                              child: Image.network(
+                                imageUrl,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ),
                   ),
-                );
-              }).toList(),
-            ),
-            Text(
-                '${movieDetails!['title']}  (${movieDetails!['year']})',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-              fontSize: 25,
-            ),
-
-            ),
-            SizedBox(height: 10),
-
-            Text('Tagline: ${movieDetails?['tagline'] ?? 'Tagline not available'}'),
-            SizedBox(height: 40),
-
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ExpansionTile(
-                title: Text(
-                  'Description',
+                // Display indicator for carousel
+                if (imageUrls.isNotEmpty)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: imageUrls.map((url) {
+                      int index = imageUrls.indexOf(url);
+                      return Container(
+                        width: 8.0,
+                        height: 8.0,
+                        margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _currentImageIndex == index ? Colors.blueAccent : Colors.grey,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                Text(
+                  '${movieDetails!['title']}  (${movieDetails!['year']})',
                   style: TextStyle(
-                    fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
+
+                ),
+                SizedBox(height: 10),
+
+                Text('Tagline: ${movieDetails?['tagline'] ?? 'Tagline not available'}',
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18,
+                ),),
+                SizedBox(height: 40),
+
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ExpansionTile(
+                    title: Text(
+                      'Description',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    children: <Widget>[
+                      Text(
+                        '${movieDetails!['description']}',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
                   ),
                 ),
-                children: <Widget>[
-                  Text(
-                    '${movieDetails!['description']}',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ],
-              ),
+                SizedBox(height: 20),
+                StarRatingWidget(
+                  imdbRating: movieDetails?['imdb_rating'] != null
+                      ? double.parse(movieDetails?['imdb_rating'])
+                      : 0.0,
+                ),
+                SizedBox(height: 20),
+                Text('Rated: ${movieDetails!['rated']}',
+                style: TextStyle(
+                  fontSize: 18,
+                ),),
+                SizedBox(height: 20),
+                TextButton.icon(
+                  onPressed: () {
+                    launchYouTubeVideo('${movieDetails!['youtube_trailer_key']}');
+                  },
+                  icon: Icon(Icons.arrow_right_alt_rounded,
+                  size: 50,),
+                  label: Text('Watch Trailer on Youtube',
+                  style: TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                  ),),
+
+                )
+              ],
             ),
-            SizedBox(height: 20),
-            StarRatingWidget(
-              imdbRating: movieDetails?['imdb_rating'] != null
-                  ? double.parse(movieDetails?['imdb_rating'])
-                  : 0.0,
-            ),
-            SizedBox(height: 20),
-            Text('Rated: ${movieDetails!['rated']}'),
-            IconButton(
-              onPressed: () {
-                launchYouTubeVideo('${movieDetails!['youtube_trailer_key']}');
-              },
-              icon: Icon(Icons.play_circle),
-            )
-        ],
-      ),
+          ),
+
+
+
+
+
+
     );
   }
 }

@@ -7,10 +7,138 @@ import 'package:sutt_round_2/Data Storage and API Calls/get_movie_by_title.dart'
 // import 'package:sutt_round_2/Data Storage and API Calls/get_movieimage_by_imdb.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 
 import 'package:flutter/material.dart';
 
+
+import 'package:flutter/material.dart';
+
+// class HomeScreen extends StatefulWidget {
+//   @override
+//   _HomeScreenState createState() => _HomeScreenState();
+// }
+//
+// class _HomeScreenState extends State<HomeScreen> {
+//   late Future<List<Movie>> _moviesFuture;
+//   late TextEditingController _searchController;
+//   bool _showResults = false;
+//   bool _showBackToNowPlayingButton = false;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _searchController = TextEditingController();
+//     _fetchNowPlayingMovies();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Movies'),
+//       ),
+//       body: Column(
+//         children: [
+//           Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: TextField(
+//                     controller: _searchController,
+//                     onChanged: (value) {
+//                       // Update the search query as the user types
+//                       setState(() {
+//                         _showResults = false;
+//                         _showBackToNowPlayingButton = false;
+//                       });
+//                     },
+//                     decoration: InputDecoration(
+//                       hintText: 'Enter movie title...',
+//                       prefixIcon: Icon(Icons.search),
+//                     ),
+//                   ),
+//                 ),
+//                 ElevatedButton(
+//                   onPressed: _onSearchPressed,
+//                   child: Text('Search'),
+//                 ),
+//               ],
+//             ),
+//           ),
+//           if (_showBackToNowPlayingButton)
+//             Padding(
+//               padding: const EdgeInsets.all(8.0),
+//               child: ElevatedButton(
+//                 onPressed: _onBackToNowPlayingPressed,
+//                 child: Text('Back to Now Playing'),
+//               ),
+//             ),
+//           if (_showResults || _moviesFuture != null)
+//             Expanded(
+//               child: FutureBuilder<List<Movie>>(
+//                 future: _moviesFuture,
+//                 builder: (context, snapshot) {
+//                   if (snapshot.connectionState == ConnectionState.waiting) {
+//                     return Center(
+//                       child: CircularProgressIndicator(),
+//                     );
+//                   } else if (snapshot.hasError) {
+//                     return Center(
+//                       child: Text('Error: ${snapshot.error}'),
+//                     );
+//                   } else {
+//                     return _buildMovieGrid(snapshot.data!);
+//                   }
+//                 },
+//               ),
+//             ),
+//         ],
+//       ),
+//     );
+//   }
+//
+//   Widget _buildMovieGrid(List<Movie> movies) {
+//     return GridView.builder(
+//       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//         crossAxisCount: 2,
+//         crossAxisSpacing: 10.0,
+//         mainAxisSpacing: 10.0,
+//       ),
+//       itemCount: movies.length,
+//       itemBuilder: (context, index) {
+//         return MovieCard(movie: movies[index]);
+//       },
+//     );
+//   }
+//
+//   void _fetchNowPlayingMovies() {
+//     setState(() {
+//       _moviesFuture = ApiService.fetchNowPlayingMovies();
+//       _showResults = true;
+//       _showBackToNowPlayingButton = false;
+//     });
+//   }
+//
+//   void _onSearchPressed() {
+//     String searchText = _searchController.text.trim();
+//     if (searchText.isNotEmpty) {
+//       setState(() {
+//         _moviesFuture = ApiService.fetchMovies(searchText);
+//         _showResults = true;
+//         _showBackToNowPlayingButton = true;
+//       });
+//     }
+//   }
+//
+//   void _onBackToNowPlayingPressed() {
+//     setState(() {
+//       _fetchNowPlayingMovies();
+//     });
+//   }
+// }
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -20,21 +148,22 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Movie>> _moviesFuture;
   late TextEditingController _searchController;
-  bool _showResults = false; // Track if results should be displayed
-  bool _showBackToNowPlayingButton = false; // Track if back to now playing button should be displayed
+  bool _showResults = false;
+  bool _showBackToNowPlayingButton = false;
 
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController();
-    _fetchNowPlayingMovies(); // Call the Now Playing Movies API on screen initialization
+    _fetchNowPlayingMovies();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Movies'),
+        title: Center(child: Text('Movies')),
+        backgroundColor: Colors.cyan,
       ),
       body: Column(
         children: [
@@ -43,11 +172,18 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintText: 'Enter movie title...',
-                      prefixIcon: Icon(Icons.search),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: _searchController,
+                      onChanged: (value) {
+                        // Update the search query as the user types
+                        _onSearchPressed();
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Enter movie title...',
+                        prefixIcon: Icon(Icons.search),
+                      ),
                     ),
                   ),
                 ),
@@ -66,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text('Back to Now Playing'),
               ),
             ),
-          if (_showResults || _moviesFuture != null) // Display results if _showResults is true or _moviesFuture is not null
+          if (_showResults || _moviesFuture != null)
             Expanded(
               child: FutureBuilder<List<Movie>>(
                 future: _moviesFuture,
@@ -90,7 +226,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildMovieGrid(List<Movie> movies) {
+  // ... other methods ...
+    Widget _buildMovieGrid(List<Movie> movies) {
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -107,21 +244,26 @@ class _HomeScreenState extends State<HomeScreen> {
   void _fetchNowPlayingMovies() {
     setState(() {
       _moviesFuture = ApiService.fetchNowPlayingMovies();
-      _showResults = true; // Display results when Now Playing Movies API is called
-      _showBackToNowPlayingButton = false; // Hide back button after searching
+      _showResults = true;
+      _showBackToNowPlayingButton = false;
     });
   }
-
   void _onSearchPressed() {
     String searchText = _searchController.text.trim();
     if (searchText.isNotEmpty) {
       setState(() {
         _moviesFuture = ApiService.fetchMovies(searchText);
-        _showResults = true; // Display results when search button is pressed
-        _showBackToNowPlayingButton = true; // Show back button after searching
+        _showResults = true;
+        _showBackToNowPlayingButton = true;
+      });
+    } else {
+      setState(() {
+        _showResults = false;
+        _showBackToNowPlayingButton = false;
       });
     }
   }
+
 
   void _onBackToNowPlayingPressed() {
     setState(() {
@@ -130,6 +272,31 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
+
+
+
+// ... other methods ...
+
+
+
+//
+//   void _onSearchPressed() {
+//     String searchText = _searchController.text.trim();
+//     if (searchText.isNotEmpty) {
+//       setState(() {
+//         _moviesFuture = ApiService.fetchMovies(searchText);
+//         _showResults = true;
+//         _showBackToNowPlayingButton = true;
+//       });
+//     }
+//   }
+//
+//   void _onBackToNowPlayingPressed() {
+//     setState(() {
+//       _fetchNowPlayingMovies();
+//     });
+//   }
+// }
 
 
 class MovieCard extends StatefulWidget {
@@ -149,77 +316,72 @@ class _MovieCardState extends State<MovieCard> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return GestureDetector(
-        onTap: () {
-          print("IMDb ID: ${widget.movie.imdbId}");
-          print('hi');
-          context.go('/details/${widget.movie.imdbId}');
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => DetailsScreen(movie: movie),
-          //   ),
-          // );
-        },
-
-    child:  Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: widget.movie.imageUrl != null && widget.movie.imageUrl!.isNotEmpty
-                        ? Image.network(
-                      widget.movie.imageUrl!,
-                      fit: BoxFit.contain, // Change BoxFit to BoxFit.contain
-                    )
-                        : Image.asset(
-                      'assets/Designer.png', // Provide a placeholder image path
-                      fit: BoxFit.contain, // Change BoxFit to BoxFit.contain
-                    ),
-                  ),
-                  Positioned(
-                    top: screenHeight * 0.01,
-                    right: screenWidth * 0.01,
-                    child: IconButton(
-                      icon: Icon(
-                        _liked ? Icons.favorite : Icons.favorite_border,
-                        color: _liked ? Colors.red : Colors.black,
+      onTap: () {
+        print("IMDb ID: ${widget.movie.imdbId}");
+        print('hi');
+        context.go('/details/${widget.movie.imdbId}');
+      },
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: widget.movie.imageUrl != null && widget.movie.imageUrl!.isNotEmpty
+                          ? Image.network(
+                        widget.movie.imageUrl!,
+                        fit: BoxFit.contain,
+                      )
+                          : Image.asset(
+                        'assets/Designer.png',
+                        fit: BoxFit.contain,
                       ),
-                      onPressed: () {
-                        setState(() {
-                          _liked = !_liked;
-                        });
-                      },
                     ),
-                  ),
-                ],
+                    Positioned(
+                      top: screenHeight * 0.01,
+                      right: screenWidth * 0.01,
+                      child: IconButton(
+                        icon: Icon(
+                          _liked ? Icons.favorite : Icons.favorite_border,
+                          color: _liked ? Colors.red : Colors.black,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _liked = !_liked;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(screenWidth * 0.02),
-            child: Text(
-              '${widget.movie.title} (${widget.movie.year})',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: screenWidth * 0.04,
-                fontWeight: FontWeight.bold,
+            Padding(
+              padding: EdgeInsets.all(screenWidth * 0.02),
+              child: Text(
+                '${widget.movie.title} (${widget.movie.year})',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: screenWidth * 0.04,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ));
+    );
   }
 }
+
 
 
 
