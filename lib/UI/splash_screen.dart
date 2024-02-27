@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'dart:async';
+import 'package:provider/provider.dart';
+import '../Provider/provider.dart';
 
 
-
-class splashScreen extends StatefulWidget {
-  @override
-  _splashScreenState createState() => _splashScreenState();
-}
-
-class _splashScreenState extends State<splashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Timer(Duration(seconds: 2), () {
-      context.go('/home');
-    });
-  }
-
+class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final goRouter = GoRouter.of(context);
+    return ChangeNotifierProvider(
+      create: (context) => SplashScreenModel(goRouter),
+      builder: (context, _) {
+        return _SplashScreenContent();
+      },
+    );
+  }
+}
+
+class _SplashScreenContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final splashScreenModel = Provider.of<SplashScreenModel>(context);
+    splashScreenModel.initiateTask();
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -29,7 +31,6 @@ class _splashScreenState extends State<splashScreen> {
               Icons.movie_filter_outlined,
               size: 150,
             ),
-
           ),
           CircularProgressIndicator(
             backgroundColor: Colors.black,
