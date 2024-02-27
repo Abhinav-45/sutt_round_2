@@ -8,22 +8,24 @@ import 'package:go_router/go_router.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Consumer<HomeScreenModel>(
       builder: (context, homeModel, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Center(child: Text('Movies', style: TextStyle(fontFamily: 'Anta'))),
+            title: Center(child: Text('Movies', style: TextStyle(fontFamily: 'Anta',fontSize: screenHeight*0.028))),
             backgroundColor: Colors.cyan,
           ),
           body: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.symmetric(vertical: screenHeight*0.015, horizontal: screenWidth*0.025),
                 child: Row(
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.symmetric(vertical: screenHeight*0.01,horizontal: screenWidth*0.01),
                         child: TextField(
                           controller: homeModel.searchController,
                           onChanged: (value) {
@@ -47,7 +49,7 @@ class HomeScreen extends StatelessWidget {
               ),
               if (homeModel.showBackToNowPlayingButton)
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.symmetric(vertical: screenHeight*0.01),
                   child: ElevatedButton(
                     onPressed: homeModel.onBackToNowPlayingPressed,
                     child: Text('Back to Now Playing'),
@@ -80,12 +82,16 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildMovieGrid(BuildContext context, List<Movie> movies) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        childAspectRatio: 9/16,
         crossAxisCount: 2,
-        crossAxisSpacing: 10.0,
-        mainAxisSpacing: 10.0,
+        crossAxisSpacing: screenWidth*0.01,
+        mainAxisSpacing: screenHeight*0.01,
       ),
+      scrollDirection: Axis.vertical,
       itemCount: movies.length,
       itemBuilder: (context, index) {
         return MovieCard(movie: movies[index]);
@@ -120,46 +126,51 @@ class MovieCard extends StatelessWidget {
       },
       child: Card(
         elevation: 4,
+
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: movie.imageUrl != null && movie.imageUrl!.isNotEmpty
-                          ? Image.network(
-                        movie.imageUrl!,
-                        fit: BoxFit.contain,
-                      )
-                          : Image.asset(
-                        'assets/Designer.png',
-                        fit: BoxFit.contain,
+
+        child: Container(
+
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: movie.imageUrl != null && movie.imageUrl!.isNotEmpty
+                            ? Image.network(
+                          movie.imageUrl!,
+                          fit: BoxFit.fill,
+                        )
+                            : Image.asset(
+                          'assets/Designer.png',
+                          fit: BoxFit.fill,
+                        ),
                       ),
-                    ),
-                    Positioned(
-                      top: screenHeight * 0.01,
-                      right: screenWidth * 0.01,
-                      child: like(),
-                    ),
-                  ],
+                      Positioned(
+                        top: screenHeight * 0.01,
+                        right: screenWidth * 0.01,
+                        child: like(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(screenWidth * 0.02),
-              child: Text(
-                '${movie.title} (${movie.year})',
-                textAlign: TextAlign.center,
-                style: customTextStyle,
+              Padding(
+                padding: EdgeInsets.all(screenWidth * 0.02),
+                child: Text(
+                  '${movie.title} (${movie.year})',
+                  textAlign: TextAlign.center,
+                  style: customTextStyle,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
