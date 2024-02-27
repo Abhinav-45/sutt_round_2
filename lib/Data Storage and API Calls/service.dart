@@ -10,7 +10,7 @@ class ApiService {
     var url = Uri.parse('https://movies-tv-shows-database.p.rapidapi.com/');
     var headers = {
       'Type': 'get-nowplaying-movies',
-      'X-RapidAPI-Key': 'b58e867985mshf07d32cb259174cp1f8199jsn4f949cac1e2c',
+      'X-RapidAPI-Key': 'e782ab3024msh2e78af442950fd0p115136jsnc3dd0b8c5f54',
       'X-RapidAPI-Host': 'movies-tv-shows-database.p.rapidapi.com'
     };
     var params = {'page': '1'};
@@ -40,7 +40,7 @@ class ApiService {
     var url = Uri.parse('https://movies-tv-shows-database.p.rapidapi.com/');
     var headers = {
       'Type': 'get-movies-by-title',
-      'X-RapidAPI-Key': 'b58e867985mshf07d32cb259174cp1f8199jsn4f949cac1e2c',
+      'X-RapidAPI-Key': 'e782ab3024msh2e78af442950fd0p115136jsnc3dd0b8c5f54',
       'X-RapidAPI-Host': 'movies-tv-shows-database.p.rapidapi.com'
     };
     var params = {'title': title.isNotEmpty ? title : 'all'};
@@ -70,7 +70,7 @@ class ApiService {
     var url = Uri.parse('https://movies-tv-shows-database.p.rapidapi.com/');
     var headers = {
       'Type': 'get-movies-images-by-imdb',
-      'X-RapidAPI-Key': 'b58e867985mshf07d32cb259174cp1f8199jsn4f949cac1e2c',
+      'X-RapidAPI-Key': 'e782ab3024msh2e78af442950fd0p115136jsnc3dd0b8c5f54',
       'X-RapidAPI-Host': 'movies-tv-shows-database.p.rapidapi.com'
     };
     var params = {'movieid': imdbId};
@@ -89,7 +89,7 @@ class ApiService {
   var url = Uri.parse('https://movies-tv-shows-database.p.rapidapi.com/');
   var headers = {
   'Type': 'get-movies-images-by-imdb',
-  'X-RapidAPI-Key': 'b58e867985mshf07d32cb259174cp1f8199jsn4f949cac1e2c',
+  'X-RapidAPI-Key': 'e782ab3024msh2e78af442950fd0p115136jsnc3dd0b8c5f54',
   'X-RapidAPI-Host': 'movies-tv-shows-database.p.rapidapi.com'
   };
   var params = {'movieid': imdbId};
@@ -116,7 +116,7 @@ class ApiService {
 
     var headers = {
       'Type': 'get-movie-details',
-      'X-RapidAPI-Key': 'b58e867985mshf07d32cb259174cp1f8199jsn4f949cac1e2c',
+      'X-RapidAPI-Key': 'e782ab3024msh2e78af442950fd0p115136jsnc3dd0b8c5f54',
       'X-RapidAPI-Host': 'movies-tv-shows-database.p.rapidapi.com'
     };
 

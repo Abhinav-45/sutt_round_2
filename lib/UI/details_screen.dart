@@ -71,7 +71,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                     padding: EdgeInsets.symmetric(vertical: screenHeight*0.03, horizontal: screenWidth*0.07),
                     child: CarouselSlider(
                       options: CarouselOptions(
-                        height: screenHeight*0.22,
+                        height: screenHeight*0.25,
                         enlargeCenterPage: true,
                         onPageChanged: (index, reason) {
                           Provider.of<MovieDetailsProvider>(context, listen: false)
@@ -127,7 +127,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   'Tagline: ${provider.movieDetails?['tagline'] ?? 'Tagline not available'}',
                   style: customTextStyle.copyWith(
                     fontWeight: FontWeight.w500,
-                    fontSize: 18,
+                    fontSize: screenHeight*0.02,
                   ),
                 ),
                 SizedBox(height: screenHeight*0.03),
@@ -164,24 +164,39 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   ),
                 ),
                 SizedBox(height: screenHeight*0.02),
-                TextButton.icon(
-                  onPressed: () {
-                    launchYouTubeVideo(
-                        '${provider.movieDetails!['youtube_trailer_key']}');
-                  },
-                  icon: Icon(
-                    Icons.arrow_right_alt_rounded,
-                    size: screenHeight*0.05,
-                  ),
-                  label: Text(
+                // TextButton.icon(
+                //   onPressed: () {
+                //     launchYouTubeVideo(
+                //         '${provider.movieDetails!['youtube_trailer_key']}');
+                //   },
+                //   icon: Icon(
+                //     Icons.arrow_right_alt_rounded,
+                //     size: screenHeight*0.05,
+                //   ),
+                //   label: Text(
+                //     'Watch Trailer on Youtube',
+                //     style: customTextStyle.copyWith(
+                //       fontSize: screenHeight*0.024,
+                //       fontWeight: FontWeight.w700,
+                //       color: Colors.black,
+                //     ),
+                //   ),
+                // )
+              TextButton(
+                child: Text(
                     'Watch Trailer on Youtube',
                     style: customTextStyle.copyWith(
                       fontSize: screenHeight*0.024,
                       fontWeight: FontWeight.w700,
                       color: Colors.black,
+                      decoration: TextDecoration.underline,
                     ),
                   ),
-                )
+                    onPressed: () {
+                    launchYouTubeVideo(
+                        '${provider.movieDetails!['youtube_trailer_key']}');
+                  },
+              ),
               ],
             ),
           );

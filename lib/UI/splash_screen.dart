@@ -20,6 +20,8 @@ class SplashScreen extends StatelessWidget {
 class _SplashScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     final splashScreenModel = Provider.of<SplashScreenModel>(context);
     splashScreenModel.initiateTask();
     return Scaffold(
@@ -29,9 +31,10 @@ class _SplashScreenContent extends StatelessWidget {
           Center(
             child: Icon(
               Icons.movie_filter_outlined,
-              size: 150,
+              size: screenHeight*0.15,
             ),
           ),
+          SizedBox(height: screenHeight*0.05),
           CircularProgressIndicator(
             backgroundColor: Colors.black,
           ),

@@ -18,8 +18,6 @@ class SplashScreenModel with ChangeNotifier {
 
 
 
-
-
 class HomeScreenModel extends ChangeNotifier {
   late TextEditingController _searchController;
 
