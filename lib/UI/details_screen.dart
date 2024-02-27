@@ -71,7 +71,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                     padding: EdgeInsets.symmetric(vertical: screenHeight*0.03, horizontal: screenWidth*0.07),
                     child: CarouselSlider(
                       options: CarouselOptions(
-                        height: screenHeight*0.25,
+                        height: screenHeight*0.3,
                         enlargeCenterPage: true,
                         onPageChanged: (index, reason) {
                           Provider.of<MovieDetailsProvider>(context, listen: false)

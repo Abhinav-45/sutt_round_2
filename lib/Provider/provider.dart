@@ -94,8 +94,8 @@ class MovieDetailsProvider extends ChangeNotifier {
         ];
       } else {
         _imageUrls = [
-          'https://i.ibb.co/hXDHWc4/4.jpg',
-          'i.ibb.co/hXDHWc4/4.jpg'
+          'assets/Designer.png',
+          'assets/Designer.png'
         ];
       }
       notifyListeners();
