@@ -20,7 +20,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    print("IMDb ID: ${widget.imdbId}");
     Provider.of<MovieDetailsProvider>(context, listen: false)
         .fetchMovieDetails(widget.imdbId);
     Provider.of<MovieDetailsProvider>(context, listen: false)

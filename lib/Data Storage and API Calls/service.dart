@@ -10,7 +10,7 @@ class ApiService {
     var url = Uri.parse('https://movies-tv-shows-database.p.rapidapi.com/');
     var headers = {
       'Type': 'get-nowplaying-movies',
-      'X-RapidAPI-Key': 'b23ba070c1msh175b7f061aead5dp1a73a8jsnec1b89c90593',
+      'X-RapidAPI-Key': 'b58e867985mshf07d32cb259174cp1f8199jsn4f949cac1e2c',
       'X-RapidAPI-Host': 'movies-tv-shows-database.p.rapidapi.com'
     };
     var params = {'page': '1'};
@@ -40,7 +40,7 @@ class ApiService {
     var url = Uri.parse('https://movies-tv-shows-database.p.rapidapi.com/');
     var headers = {
       'Type': 'get-movies-by-title',
-      'X-RapidAPI-Key': 'b23ba070c1msh175b7f061aead5dp1a73a8jsnec1b89c90593',
+      'X-RapidAPI-Key': 'b58e867985mshf07d32cb259174cp1f8199jsn4f949cac1e2c',
       'X-RapidAPI-Host': 'movies-tv-shows-database.p.rapidapi.com'
     };
     var params = {'title': title.isNotEmpty ? title : 'all'};
@@ -70,7 +70,7 @@ class ApiService {
     var url = Uri.parse('https://movies-tv-shows-database.p.rapidapi.com/');
     var headers = {
       'Type': 'get-movies-images-by-imdb',
-      'X-RapidAPI-Key': 'b23ba070c1msh175b7f061aead5dp1a73a8jsnec1b89c90593',
+      'X-RapidAPI-Key': 'b58e867985mshf07d32cb259174cp1f8199jsn4f949cac1e2c',
       'X-RapidAPI-Host': 'movies-tv-shows-database.p.rapidapi.com'
     };
     var params = {'movieid': imdbId};
@@ -81,7 +81,6 @@ class ApiService {
       var responseData = json.decode(response.body);
       return responseData['poster'] as String?;
     } else {
-      print('Failed to fetch poster for IMDb ID: $imdbId');
       return null;
     }
   }
@@ -90,7 +89,7 @@ class ApiService {
   var url = Uri.parse('https://movies-tv-shows-database.p.rapidapi.com/');
   var headers = {
   'Type': 'get-movies-images-by-imdb',
-  'X-RapidAPI-Key': 'b23ba070c1msh175b7f061aead5dp1a73a8jsnec1b89c90593',
+  'X-RapidAPI-Key': 'b58e867985mshf07d32cb259174cp1f8199jsn4f949cac1e2c',
   'X-RapidAPI-Host': 'movies-tv-shows-database.p.rapidapi.com'
   };
   var params = {'movieid': imdbId};
@@ -103,13 +102,12 @@ class ApiService {
   var fanartUrl = responseData['fanart'] as String?;
   return ImageUrls(posterUrl: posterUrl, fanartUrl: fanartUrl);
   } else {
-  print('Failed to fetch images for IMDb ID: $imdbId');
   return null;
   }
   }
 
   static Future<ImageUrls?> fetchImageUrls(String imdbId) async {
-    return _fetchImageUrls(imdbId); // Call the _fetchImageUrls method
+    return _fetchImageUrls(imdbId);
   }
 
 
@@ -118,7 +116,7 @@ class ApiService {
 
     var headers = {
       'Type': 'get-movie-details',
-      'X-RapidAPI-Key': 'b23ba070c1msh175b7f061aead5dp1a73a8jsnec1b89c90593',
+      'X-RapidAPI-Key': 'b58e867985mshf07d32cb259174cp1f8199jsn4f949cac1e2c',
       'X-RapidAPI-Host': 'movies-tv-shows-database.p.rapidapi.com'
     };
 
@@ -126,8 +124,6 @@ class ApiService {
       var response = await http.get(url, headers: headers);
 
       if (response.statusCode == 200) {
-        print("Response Body Structure:");
-        print(json.decode(response.body));
         return json.decode(response.body);
       } else {
         throw Exception('Failed to load movie details');

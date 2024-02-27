@@ -116,8 +116,6 @@ class MovieCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        print("IMDb ID: ${movie.imdbId}");
-        print('hi');
         context.go('/details/${movie.imdbId}');
       },
       child: Card(

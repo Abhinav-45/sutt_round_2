@@ -1,14 +1,8 @@
-// splash_screen_model.dart
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
-
 import '../Data Storage and API Calls/service.dart';
-import '../Models/imageUrls.dart';
 import '../Models/movie.dart';
-
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'dart:async';
 
 class SplashScreenModel with ChangeNotifier {
@@ -17,16 +11,13 @@ class SplashScreenModel with ChangeNotifier {
   SplashScreenModel(this._router);
 
   void initiateTask() async {
-    // Simulating an asynchronous task with a delay
     await Future.delayed(Duration(seconds: 2));
-
-    // Navigate to the home screen after the task is complete
     _router.go('/home');
   }
 }
 
 
-// home_screen_model.dart
+
 
 
 class HomeScreenModel extends ChangeNotifier {
@@ -39,7 +30,9 @@ class HomeScreenModel extends ChangeNotifier {
   Future<List<Movie>>? _moviesFuture;
 
   Future<List<Movie>>? get moviesFuture => _moviesFuture;
+
   bool get showResults => _showResults;
+
   bool get showBackToNowPlayingButton => _showBackToNowPlayingButton;
 
   HomeScreenModel() {
@@ -70,13 +63,6 @@ class HomeScreenModel extends ChangeNotifier {
     _fetchNowPlayingMovies();
   }
 }
-
-// movie_details_model.dart
-
-
-// detail_screen_model.dart
-
-
 
 
 
